@@ -1,0 +1,402 @@
+* {
+	margin:0;
+	padding:0;
+
+
+   font-family: Lucida Console;
+
+    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
+    -ms-user-select: none; /* IE10+ */
+}
+
+*:focus{
+    outline:0;
+}
+
+.prototype {
+    display: none;
+}
+
+.button{
+    -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+    -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+    box-shadow:inset 0px 1px 0px 0px #ffffff;
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf) );
+    background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');
+    background-color:#ededed;
+    -webkit-border-top-left-radius:6px;
+    -moz-border-radius-topleft:6px;
+    border-top-left-radius:6px;
+    -webkit-border-top-right-radius:6px;
+    -moz-border-radius-topright:6px;
+    border-top-right-radius:6px;
+    -webkit-border-bottom-right-radius:6px;
+    -moz-border-radius-bottomright:6px;
+    border-bottom-right-radius:6px;
+    -webkit-border-bottom-left-radius:6px;
+    -moz-border-radius-bottomleft:6px;
+    border-bottom-left-radius:6px;
+    text-indent:0;
+    border:1px solid #dcdcdc;
+    color:rgba(20,20,20,1);
+    font-family:arial;
+    font-size:15px;
+    font-weight:bold;
+    font-style:normal;
+    height:40px;
+    line-height:40px;
+    width:150px;
+    text-decoration:none;
+    text-align:center;
+    text-shadow:1px 1px 0px #ffffff;
+    cursor:pointer;
+}
+
+.button:active {
+    position:relative;
+    top:1px;
+    border:none;
+}
+
+.button:hover {
+    background-color:#009900;
+}
+
+/****************************LOGIN*************************************/
+#page_login, #page_lobbies, #page_create_lobby, #page_lobby {
+	position:relative;
+	background-image:url("../images/menu_space.jpg");
+}
+
+#page_login .orion_logo {
+	position:absolute;
+	top:100px;
+	left:50%;
+	margin-left:-300px;
+	background-repeat:no-repeat;
+	width:600px;
+	height:150px;
+	background-image:url("../images/orion_logo.png");
+}
+
+#page_login .login_box {
+	position:absolute;
+	width:600px;
+	height:200px;
+	top:300px;
+	left:50%;
+	margin-left:-300px;
+	border:1px solid white;
+	border-radius:4px;
+    background-color:rgba(0,0,0,0.7);
+}
+
+#page_login .login_box #login_username {
+	display:block;
+	margin:auto;
+	margin-top:40px;
+	width:300px;
+	height:30px;
+	border-radius:14px;
+	line-height:33px;
+	font-size:18px;
+    font-family:arial;
+    padding-left:15px;
+}
+
+#page_login .login_box #login_username.error {
+    border-color:red;
+}
+
+#page_login .login_box #login_button {
+    display:block;
+    margin:auto;
+    margin-top:40px;
+}
+
+#page_login .indiespeedrun_credits {
+    position:absolute;
+    width:1000px;
+    top:600px;
+    left:50%;
+    color:#006699;
+    font-style:italic;
+    font-size:18px;
+    margin-left:-500px;
+    background:rgba(255,255,255, 0.8);
+    padding:5px;
+    border:1px solid black;
+    border-radius:4px;
+    text-align: center;
+}
+
+/*************************LOBBIES********************************/
+#page_lobbies .title {
+    color:white;
+    text-align: center;
+    font-size:42px;
+    padding-top:10px;
+    margin-bottom:20px;
+}
+
+#page_lobbies .lobbylistcontainer {
+    position:absolute;
+    left:50%;
+    margin-left:-300px;
+    height: 400px;
+    width: 600px;
+    border:1px solid white;
+    border-radius:4px;
+    background-color:rgba(0,0,0,0.7);
+    overflow:hidden;
+}
+
+#page_lobbies .lobbylist {
+    padding:1px;
+    overflow:hidden;
+}
+
+#page_lobbies .lobbylist .lobby {
+	color:white;
+	font-size:20px;
+	border-bottom:1px groove white;
+	cursor:pointer;
+}
+
+#page_lobbies .lobbylist .lobby:last-child {
+    border-bottom:none;
+}
+
+
+#page_lobbies .lobbylist .lobby div {
+	display:inline-block;
+    padding:3px;
+}
+
+#page_lobbies .lobbylist .lobby.selected {
+    background-color:rgba(80,80,80,0.8);
+}
+
+#page_lobbies .lobbylist .lobby .game_name {
+	width:80%;
+	border-right:1px solid white;
+}
+
+#page_lobbies .lobbylist .lobby .nPlayers {
+	width:15%;
+	text-align:center;
+	color:lightgreen;
+}
+
+#page_lobbies #lobbies_button_container {
+    position:absolute;
+    top:525px;
+    left:50%;
+    margin-left:-260px;
+}
+
+#page_lobbies .lobbies_button {
+    margin:0 15px;
+}
+/**************************CREATE LOBBY********************************/
+#page_create_lobby .title {
+    color:white;
+    font-size:40px;
+    position:absolute;
+    top:150px;
+    left:50%;
+    width:300px;
+    margin-left:-150px;
+    text-align:center;
+}
+
+#page_create_lobby .create_lobby_container {
+    position:absolute;
+    width:600px;
+    height:200px;
+    top:220px;
+    left:50%;
+    margin-left:-300px;
+    border:1px solid white;
+    border-radius:4px;
+    background-color:rgba(0,0,0,0.7);
+}
+
+#page_create_lobby .create_lobby_container .game_name_label {
+    color:white;
+    display:block;
+    margin:auto;
+    margin-top:20px;
+    font-size:22px;
+    text-align:center;
+}
+
+#page_create_lobby .create_lobby_container #game_name {
+    display:block;
+    margin:auto;
+    margin-top:20px;
+    width:300px;
+    height:30px;
+    border-radius:14px;
+    line-height:33px;
+    font-size:18px;
+    font-family:arial;
+    padding-left:15px;
+}
+
+#page_create_lobby .create_lobby_container .create_lobby_buttons_container{
+    width:330px;
+    display:block;
+    margin:auto;
+    margin-top:20px;
+}
+
+#page_create_lobby .create_lobby_container #create_lobby_button {
+    margin-right:20px;
+}
+
+/****************************LOBBY***********************************/
+
+#page_lobby .title {
+    color:white;
+    font-size:40px;
+    position:absolute;
+    top:20px;
+    left:50%;
+    width:300px;
+    text-align:center;
+    margin-left:-150px;
+}
+
+#page_lobby .players {
+    position:absolute;
+    top:100px;
+    left:50%;
+    width:600px;
+    margin-left:-300px;
+    height:75px;
+    border:1px solid white;
+    border-radius:4px;
+    padding:10px;
+    background-color:rgba(0,0,0,0.7);
+    overflow:hidden;
+}
+
+#page_lobby .players .player {
+    position:relative;
+    color:white;
+    font-size:20px;
+    border-bottom:1px groove white;;
+    cursor:pointer;
+}
+
+#page_lobby .players .player:last-child {
+    border-bottom:none;
+}
+
+
+#page_lobby .players .player div {
+    display:inline-block;
+    padding:3px;
+    height:32px;
+}
+
+#page_lobby .players .player.selected {
+    background-color:rgba(80,80,80,0.8);
+}
+
+#page_lobby .players .player .name {
+    width:80%;
+    border-right:1px solid white;
+    padding-top:2px;
+}
+
+#page_lobby .players .player .status {
+    position:absolute;
+    top:-5px;
+    right:10px;
+    width:15%;
+    text-align:center;
+    background-repeat: no-repeat;
+    background-position:center;
+}
+
+#page_lobby .players .player .status.owner {
+    background-image:url("../images/star.png");
+
+}
+
+#page_lobby .players .player .status.ready {
+    background-image:url("../images/check.png");
+}
+
+#page_lobby .lobby_buttons_container {
+    position:absolute;
+    width:330px;
+    top:225px;
+    left:50%;
+    margin-left:-165px;
+}
+
+#page_lobby .lobby_buttons_container .lobby_action_button{
+    margin-right:20px;
+}
+
+/**********************Game**********************************/
+
+#page_game #color_player{
+    position:absolute;
+    top:50%;
+    left:50%;
+    margin-left:-200px;
+    margin-top:-20px;
+    width:400px;
+    height:40px;
+    line-height:20px;
+    text-align:center;
+    background-color:white;
+    border:1px solid black;
+    border-radius:4px;
+    opacity:0.8;
+    color:white;
+    -webkit-box-shadow: 0px 0px 30px rgba(50, 50, 50, 1);
+    -moz-box-shadow:    0px 0px 30px rgba(50, 50, 50, 1);
+    box-shadow:         0px 0px 30px rgba(50, 50, 50, 1);
+    z-index:100;
+}
+
+#page_game .action_button{
+    position:absolute;
+    top:-99999999px;
+    left:-99999999px;
+    width:64px;
+    height:64px;
+    z-index:50;
+    -webkit-box-shadow: 0px 0px 30px rgba(50, 50, 50, 1);
+    -moz-box-shadow:    0px 0px 30px rgba(50, 50, 50, 1);
+    box-shadow:         0px 0px 30px rgba(50, 50, 50, 1);
+
+}
+
+#page_game .create_units{
+    background-image:url('../images/Motherships/buttons/icon_units.jpg');
+}
+
+#page_game .tech{
+    background-image:url('../images/Motherships/buttons/icon_building.jpg');
+}
+
+#page_game .create_cargo{
+    background-image:url('../images/Motherships/buttons/icon_cargo.jpg');
+}
+
+#page_game .create_builder{
+    background-image:url('../images/Motherships/buttons/icon_builder.jpg');
+}
+
+#page_game .create_attack{
+    background-image:url('../images/Motherships/buttons/icon_attack.jpg');
+}
