@@ -85,6 +85,7 @@ var MotherShip = PlayerObject.extend({
 			this.position.y = temp.y;
 		}
 	},
+    
 	select : function(x, y){
 		if(x >= this.position.x - (this.image.width/4) && x <= (this.position.x + (this.image.width/4))){
 			if(y >= this.position.y - (this.image.height/4) && y <= (this.position.y + (this.image.height/4))){

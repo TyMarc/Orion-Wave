@@ -1,20 +1,23 @@
 var AttackShip = Unit.extend({
-	constructor : function(id, playerId, position, color) {
+	constructor : function(id, playerId, position, color, imageSrc, bulletImageSrc, moveSpeed, damage, range, attackSpeed) {
         this.base(id, playerId, position, 300, color);
 
 		this.id = id;
 		this.playerId = playerId;
-		this.moveSpeed = 150;
+		this.moveSpeed = moveSpeed;
 		this.orientation = 0;
 		this.colorId = color;
 
         /*To determine*/
-        this.damage = 50;
-        this.range = 500;
-        this.attackSpeed = 50;
+        this.damage = damage;
+        this.range = range;
+        this.attackSpeed = attackSpeed;
+        this.MAXATTACKSPEED = attackSpeed;
         this.bullets = [];
 
-        this.image.src = "images/Attack/attack" + color + ".png"
+        this.image.src = imageSrc;
+        this.bulletImage = new Image();
+        this.bulletImage.src = bulletImageSrc;
 	},
 
     draw : function(context, camera, selectedUnits) {
@@ -52,8 +55,8 @@ var AttackShip = Unit.extend({
             this.attackSpeed -= 1;
 
             if(this.attackSpeed == 0){
-                this.bullets.push(new Bullet(new Point(this.position.x, this.position.y), enemy, this.damage, "images/Attack/bullet_mauve.png"));
-                this.attackSpeed = 50;
+                this.bullets.push(new Bullet(new Point(this.position.x, this.position.y), enemy, this.damage, this.bulletImage));
+                this.attackSpeed = this.MAXATTACKSPEED;
             }
         }
     }

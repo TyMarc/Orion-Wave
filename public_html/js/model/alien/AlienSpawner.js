@@ -1,10 +1,12 @@
-var AlienSpawner = Target.extend({
-    constructor : function(position, spawnRate) {
-        this.base(position);
+var AlienSpawner = PlayerObject.extend({
+    constructor : function(position, spawnRate, alienId, hitpoints) {
+        this.base(position, hitpoints);
         this.spawnRate = spawnRate;
 
         this.currentSpawn = 0;
         this.spawnCounter = 0;
+
+        this.alienId = alienId;
 
         this.image = new Image();
     },
@@ -37,8 +39,8 @@ var AlienSpawner = Target.extend({
     },
 
     select : function(x, y){
-        if(x >= this.position.x - (this.image.width/4) && x <= (this.position.x + (this.image.width/4))){
-            if(y >= this.position.y - (this.image.height/4) && y <= (this.position.y + (this.image.height/4))){
+        if(x >= this.position.x - (this.image.width/2) && x <= (this.position.x + (this.image.width/2))){
+            if(y >= this.position.y - (this.image.height/2) && y <= (this.position.y + (this.image.height/2))){
                 return true;
             }
         }

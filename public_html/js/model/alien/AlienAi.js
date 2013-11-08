@@ -21,11 +21,7 @@ var AlienAi = Base.extend({
         }
     },
 
-    takeDescision : function() {
-    },
-
-    spawnUnit : function() {
-        this.unitCounter++;
+    takeDecision : function() {
     },
 	
 	update : function(framerate) {
@@ -35,18 +31,21 @@ var AlienAi = Base.extend({
         }
         this.decisionTime += framerate/1000;
         if(this.decisionTime >= this.actionPerSecond) {
-            this.takeDescision();
+            this.takeDecision();
             this.decisionTime = 0;
         }
 		for(var i in this.units) {
-			this.units[i+""].update(framerate);
+            if(this.units[i+""].hitpoints <= 0){
+                delete this.units[i+""];
+            }
+            else{
+			    this.units[i+""].update(framerate);
+            }
 		}
 
 	},
 
     select : function(position) {
-        var selectedStuff = new Array();
-
         for(var u in this.units){
             var unit = this.units[u];
             if(unit.select(position.x, position.y)){

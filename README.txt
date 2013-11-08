@@ -1,9 +1,3 @@
-Orion-Wave
-==========
-
-Orion game with a twist: WAVE-LOADED MOBS
-
-
 TO PLAY THIS GAME : 
 
 1. Install node.js on your server :

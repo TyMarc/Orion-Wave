@@ -1,14 +1,9 @@
 var AlienInsectShip = AttackShip.extend({
     constructor : function(id, playerId, position) {
-        this.base(id, playerId, position, 0);
+        var imageSrc = "images/Aliens/alien_ship0.png";
+        var bulletImageSrc = "images/Aliens/alien_bullet0.png";
+        this.base(id, playerId, position, 300, 0, imageSrc, bulletImageSrc, 100, 25, 500, 75);
 
-        /*To determine*/
-        this.hitpoints = 50;
-        this.damage = 25;
-        this.range = 500;
-        this.attackSpeed = 75;
-
-        this.image.src = "images/Aliens/alien_ship0.png";
     },
 
     update : function(framerate) {
@@ -32,16 +27,6 @@ var AlienInsectShip = AttackShip.extend({
     },
 
     attack : function(enemy, framerate) {
-        if(Utils.calcDistance(new Point(this.position.x, this.position.y), enemy.position) >= this.range) {
-            this.move(framerate);
-        }
-        else{
-            this.attackSpeed -= 1;
-
-            if(this.attackSpeed == 0){
-                this.bullets.push(new Bullet(new Point(this.position.x, this.position.y), enemy, this.damage, "images/Aliens/alien_bullet0.png"));
-                this.attackSpeed = 50;
-            }
-        }
+        this.base(enemy, framerate);
     }
 });

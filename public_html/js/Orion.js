@@ -250,9 +250,12 @@ Orion = FilthyEngine.extend({
                     } else if(data['type'] == 'attack') {
                         var unitsAttack = new Array();
                         console.log(ref.game);
-                        var unitToAttack = ref.game.aliens[data['alienToAttackId']+''].units[data['unitToAttackId']+''];
-                        if(unitToAttack == undefined){
+                        var unitToAttack;
+                        if(data['isSpawner'] == 1){
                             unitToAttack = ref.game.aliens[data['alienToAttackId']+''].spawner;
+                        }
+                        else{
+                            unitToAttack = ref.game.aliens[data['alienToAttackId']+''].units[data['unitToAttackId']+''];
                         }
                         for(var unitId in data['unitIds']){
                             unitsAttack[unitId] = ref.game.players[''+data['uid']].units[''+data['unitIds'][unitId]]
@@ -261,10 +264,22 @@ Orion = FilthyEngine.extend({
 
                     } else if(data['type'] == 'disconnect') {
                         delete ref.game.players[""+data['uid']];
+                    } else if(data['type'] == 'destroy-alien') {
+                        if(data['isSpawner'] == 1){
+                            delete ref.game.aliens[''+data['alienToKillId']];
+                        }
+                        else{
+                            delete ref.game.aliens[''+data['alienToKillId']].units[''+data['unitToKillId']];
+                        }
                     } else if(data['type'] == 'destroy-unit') {
                         delete ref.game.players[''+data['uid']].units[''+data['id']];
                         delete ref.game.selectedUnits[''+data['id']];
-                    } else if(data['type'] == 'create-attack') {
+                    } else if(data['type'] == 'destroy-player'){
+                        delete ref.game.players[''+data['uid']];
+                        if(data['uid'] == ref.game.playerId)
+                            delete ref.game.selectedUnits;
+                    }
+                    else if(data['type'] == 'create-attack') {
                         ref.game.players[''+data['uid']].buy(UnitCost.ATTACK);
                         ref.game.players[''+data['uid']].units[''+data['id']] = new AttackShip(data['id'], data['uid'], new Point(data['x'], data['y']), data['color']);
                        // ref.game.selectedIndex = data['id'];
@@ -298,7 +313,7 @@ Orion = FilthyEngine.extend({
                         ref.game.currentTurn++;
                         ref.game.rotateHourglass = true;
                         for(var s in data['spawners']) {
-                            ref.game.aliens[''+data['spawners'][s]['id']] = new AlienInsect(data['spawners'][s]['id'], 5, 5, ref.game, {x:data['spawners'][s]['x'], y:data['spawners'][s]['y']});
+                            ref.game.aliens[''+data['spawners'][s]['id']] = new AlienInsect(data['spawners'][s]['id'], 1, 10, ref.game, {x:data['spawners'][s]['x'], y:data['spawners'][s]['y']});
                         }
                     }
 
@@ -360,10 +375,6 @@ Orion = FilthyEngine.extend({
                     ref.game.startBoxSelect = undefined;
                     ref.game.endBoxSelect = undefined;
                 }
-            });
-
-            $(document).bind("click", function(event) {
-
             });
 
             $(document).bind("contextmenu", function(event) {

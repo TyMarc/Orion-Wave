@@ -38,21 +38,26 @@ var OrionGame = Game.extend({
             }
 		}
 
-        context.save();
-        this.players[this.playerId].draw(context, this.camera, this.selectedUnits);
-        context.restore();
-		
-		if(this.startBoxSelect !== undefined && this.endBoxSelect !== undefined){
-			context.beginPath();
-			context.rect(this.startBoxSelect.x, this.startBoxSelect.y, this.endBoxSelect.x-this.startBoxSelect.x, this.endBoxSelect.y-this.startBoxSelect.y);
-			context.fillStyle = "rgba(255, 255, 255, 0.1)";
-			context.fill();
-			context.lineWidth = 0.5;
-			context.strokeStyle = Utils.getColor(this.players[this.playerId+""].colorId);
-			context.stroke();
-		}
+        if(this.players[this.playerId] != undefined){
+            context.save();
+            this.players[this.playerId].draw(context, this.camera, this.selectedUnits);
+            context.restore();
 
-        this.drawMenu(context);
+            if(this.startBoxSelect !== undefined && this.endBoxSelect !== undefined){
+                context.beginPath();
+                context.rect(this.startBoxSelect.x, this.startBoxSelect.y, this.endBoxSelect.x-this.startBoxSelect.x, this.endBoxSelect.y-this.startBoxSelect.y);
+                context.fillStyle = "rgba(255, 255, 255, 0.1)";
+                context.fill();
+                context.lineWidth = 0.5;
+                context.strokeStyle = Utils.getColor(this.players[this.playerId+""].colorId);
+                context.stroke();
+            }
+
+            this.drawMenu(context);
+        }
+        else{
+            this.eraseMenu();
+        }
 
         this.drawUI(context);
 	},
@@ -87,15 +92,25 @@ var OrionGame = Game.extend({
                 context.fillStyle = "rgba(255, 0, 0, 1)";
             else
                 context.fillStyle = "rgba(0, 100, 255, 1)";
-            context.fillText(this.players[p].name + " : Hydrogen : " + this.players[p].resources.hydrogen + " Energy : " + this.players[p].resources.energy,10,y );
+
+            var pad = "000000";
+            var hydrogen = "" + pad.substring(0, pad.length - this.players[p].resources.hydrogen.toString().length) + this.players[p].resources.hydrogen;
+            var energy = "" + pad.substring(0, pad.length - this.players[p].resources.energy.toString().length) + this.players[p].resources.energy;
+            context.fillText(this.players[p].name + " : Hydrogen : " + hydrogen + " Energy : " + energy ,10,y );
             y+=25;
         }
 
         context.fillStyle = "rgba(255, 255, 255, 1)"
         tmp = this.gameTimeMs;
         var mins = Math.floor(this.gameTimeMs/1000/60);
+        if(mins < 10){
+            mins = "0" + mins;
+        }
         tmp -= mins*60*1000;
         var secs = Math.floor(tmp/1000);
+        if(secs < 10){
+            secs = "0" + secs;
+        }
 
         context.fillText('Time' + " : " + mins + ":" + secs, this.camera.width-195, 25);
         context.fillText('Turn' + " : " + this.currentTurn, this.camera.width-175, 50);
@@ -145,21 +160,59 @@ var OrionGame = Game.extend({
         }
     },
 
+    eraseMenu : function() {
+        $('#page_game .action_button').each(function( index ) {
+            var top = $(this).offset().top;
+
+            $(this).css('top', '-999999999px');
+            $(this).css('left', '-99999999px');
+
+            if(top <= 75){
+                $(this).css('opacity', '0.3');
+            }
+            else{
+                $(this).css('opacity', '1');
+            }
+        });
+    },
+
 	update : function(framerate) {
 		this.base(framerate);
 
 
         if(!this.wait || (this.wait && this.playerId == this.lowestUid)) {
             for(a in this.aliens) {
-                this.aliens[a].update(framerate);
+                if(this.aliens[a].spawner.hitpoints <= 0){
+                    delete this.aliens[a];
+                }
+                else{
+                    this.aliens[a].update(framerate);
+                }
             }
 
             for(var p in this.players){
-                this.players[p].update(framerate, this.world, this.selectedUnits);
+                if(this.players[p].mothership.hitpoints <= 0){
+                    if(this.players[p].uid == this.playerId){
+                        this.changeBindingsObserver();
+                    }
+                    delete this.players[p];
+                }
+                else{
+                    this.players[p].update(framerate, this.world, this.selectedUnits);
+                }
             }
-            this.gameTimeMs += framerate
-        };
+
+            this.gameTimeMs += framerate;
+        }
 	},
+
+    changeBindingsObserver : function() {
+        $(document).unbind('mousedown');
+        $(document).unbind('mousemove');
+        $(document).unbind('mouseup');
+        $(document).unbind('contextmenu');
+        $(document).bind('contextmenu', function(){event.preventDefault();});
+    },
 	
 	keypress : function(key) {
 		this.base(key);
@@ -234,13 +287,14 @@ var OrionGame = Game.extend({
                 if(unitToAttack != undefined) {
                     message['type'] = 'attack';
                     message['isSpawner'] = 0;
-                    if(unitToAttack instanceof AlienSpawner)
+                    if(unitToAttack instanceof AlienSpawner){
                         message['isSpawner'] = 1;
+                        message['alienToAttackId'] = unitToAttack.alienId;
+                    }
                     else{
                         message['unitToAttackId'] = unitToAttack.id;
+                        message['alienToAttackId'] = unitToAttack.playerId;
                     }
-                    console.log(unitToAttack);
-                    message['alienToAttackId'] = unitToAttack.playerId;
                     var unitIds = new Array();
                     unitIds.push(this.selectedUnits[0].id);
                     message['unitIds'] = unitIds;
@@ -305,13 +359,15 @@ var OrionGame = Game.extend({
                 if(unitToAttack != undefined) {
                     message['type'] = 'attack';
                     message['isSpawner'] = 0;
-                    if(unitToAttack instanceof AlienSpawner)
+                    if(unitToAttack instanceof AlienSpawner){
                         message['isSpawner'] = 1;
+                        message['alienToAttackId'] = unitToAttack.alienId;
+                    }
                     else{
                         message['unitToAttackId'] = unitToAttack.id;
+                        message['alienToAttackId'] = unitToAttack.playerId;
                     }
-                    console.log(unitToAttack);
-                    message['alienToAttackId'] = unitToAttack.playerId;
+
                     var unitIds = new Array();
                     for(var u in this.selectedUnits){
                         if(this.selectedUnits[u] instanceof AttackShip) {
@@ -345,12 +401,10 @@ var OrionGame = Game.extend({
     enemySelect : function(position) {
         for(var p in this.aliens) {
             var alien = this.aliens[p];
-                for(var u in alien.units){
-                    var select = alien.select(position);
-                    if(select != undefined){
-                        return select;
-                    }
-                }
+            var select = alien.select(position);
+            if(select != undefined){
+                return select;
+            }
         }
 
         return undefined;
