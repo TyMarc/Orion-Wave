@@ -9,6 +9,7 @@ include("js/model/Cargo.js");
 include("js/model/Building.js");
 include("js/model/Bullet.js");
 include("js/model/AttackShip.js");
+include("js/model/human/BasicAttackShip.js");
 include("js/model/Extractor.js");
 include("js/model/MotherShip.js");
 include("js/model/Player.js");
@@ -31,7 +32,7 @@ Orion = FilthyEngine.extend({
 		this.game;
 		//this.view = new OrionView(this.game, canvasId);
 
-        this.createSocket('main', new OrionSocket(this, '127.0.0.1', '8080'));
+        this.createSocket('main', new OrionSocket(this, 'http://lmainformatique.ca', '8080'));
 	},
 
 	init : function() {
@@ -281,7 +282,7 @@ Orion = FilthyEngine.extend({
                     }
                     else if(data['type'] == 'create-attack') {
                         ref.game.players[''+data['uid']].buy(UnitCost.ATTACK);
-                        ref.game.players[''+data['uid']].units[''+data['id']] = new AttackShip(data['id'], data['uid'], new Point(data['x'], data['y']), data['color']);
+                        ref.game.players[''+data['uid']].units[''+data['id']] = new BasicAttackShip(data['id'], data['uid'], new Point(data['x'], data['y']), data['color']);
                        // ref.game.selectedIndex = data['id'];
                     } else if(data['type'] == 'create-cargo') {
                         ref.game.players[''+data['uid']].buy(UnitCost.CARGO);

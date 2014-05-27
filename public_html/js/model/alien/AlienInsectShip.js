@@ -2,7 +2,7 @@ var AlienInsectShip = AttackShip.extend({
     constructor : function(id, playerId, position) {
         var imageSrc = "images/Aliens/alien_ship0.png";
         var bulletImageSrc = "images/Aliens/alien_bullet0.png";
-        this.base(id, playerId, position, 300, 0, imageSrc, bulletImageSrc, 100, 25, 500, 75);
+        this.base(id, playerId, position, 0, imageSrc, bulletImageSrc, 100, 25, 500, 75);
 
     },
 

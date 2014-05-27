@@ -14,7 +14,7 @@ var AttackShip = Unit.extend({
         this.attackSpeed = attackSpeed;
         this.MAXATTACKSPEED = attackSpeed;
         this.bullets = [];
-
+	
         this.image.src = imageSrc;
         this.bulletImage = new Image();
         this.bulletImage.src = bulletImageSrc;

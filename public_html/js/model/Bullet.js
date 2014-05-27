@@ -10,7 +10,7 @@ Bullet = Target.extend({
         this.flag = new Flag(new Target(new Point(position.x, position.y)), enemy, FlagState.ATTACK);
 
         this.image = new Image();
-        this.image.src = imageUrl;
+        this.image.src = imageUrl.src;
     },
 
     changeFlag : function(finalTarget, state) {
